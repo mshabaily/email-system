@@ -9,15 +9,16 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 public class Sender {
-    public void send(final String username, final String password, String host,
-                    String senderAddress, String receiverAddress){
+    public void send(String[] args){
         //configure Mailtrap's SMTP server details
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.host", args[2]);
         props.put("mail.smtp.port", "2525");
         //create the Session object
+        final String username = args[0];
+        final String password = args[1];
         Session session = Session.getInstance(props,
             new jakarta.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -28,13 +29,13 @@ public class Sender {
             //create a MimeMessage object
             Message message = new MimeMessage(session);
             //set From email field
-            message.setFrom(new InternetAddress(receiverAddress));
+            message.setFrom(new InternetAddress(args[3]));
             //set To email field
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress(senderAddress));
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(args[4]));
             //set email subject field
-            message.setSubject("Here comes Jakarta Mail!");
+            message.setSubject("Test Email");
             //set the content of the email message
-            message.setText("Just discovered that Jakarta Mail is fun and easy to use");
+            message.setText("This is a test email");
             //send the email message
             Transport.send(message);
             System.out.println("Email Message Sent Successfully");
