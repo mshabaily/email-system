@@ -21,11 +21,10 @@ public class App extends Application {
     static LinkedHashMap<String,String> fields = new LinkedHashMap<String, String>();
 
     public static void main(String[] args){
-        fields.put("username", "ece18aba10cc34");
-        fields.put("password", "");
-        fields.put("host", "sandbox.smtp.mailtrap.io");
         fields.put("senderAddress", "");
         fields.put("receiverAddress", "");
+        fields.put("Title", "");
+        fields.put("Message", "");
         launch(args);
     }
 
@@ -55,12 +54,16 @@ public class App extends Application {
                     position++;
                 }
                 Sender sender = new Sender();
-                sender.send(args);
+                try {
+                    sender.send(args[0],args[1],args[2],args[3]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             };
         Button sendButton = new Button("SEND EMAIL");
         sendButton.setOnAction(sendEmail);
-        mainContainer.add(sendButton,0,fields.size());
+        mainContainer.add(sendButton,0,fields.size(),1,2);
         Scene scene = new Scene(mainContainer);
         stage.setScene(scene);
         stage.show();
